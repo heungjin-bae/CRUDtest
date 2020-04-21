@@ -1,9 +1,9 @@
 // index.js
-
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
+var helmet  = require('helmet');
 var app = express();
 
 // DB setting
@@ -24,6 +24,7 @@ db.on('error', function(err){
 
 // Other settings
 app.set('view engine', 'ejs');
+app.use(helmet());
 app.use(express.static(__dirname+'/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
