@@ -37,6 +37,9 @@ app.use('/contacts',require('./routes/contacts'));
 app.use((req, res, next) =>
     res.status(404).send('Sorry cant find that!'));
 
+app.use((err, req, res, next) =>
+    res.status(500).send('Something broke!'));
+
 // Port setting
 var port = 8000;
 app.listen(port, function(){
