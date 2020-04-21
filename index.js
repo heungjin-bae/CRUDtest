@@ -29,78 +29,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
 
-// DB schema
-var contactSchema = mongoose.Schema({
-    name:{type:String, required:true, unique:true},
-    email:{type:String},
-    phone:{type:String}
-});
-
-var Contact = mongoose.model('contact', contactSchema);
-
-//Routes
-//home
-app.get('/', function(req, res){
-    res.redirect('/contacts');
-});
-
-//index
-app.get('/contacts', function(req, res){
-    Contact.find({},function(err, contacts){
-        if(err) return res.json(err);
-        res.render('contacts/index', {contacts:contacts});
-    });
-});
-
-//new
-app.get('/contacts/new', function(req, res){
-    res.render('contacts/new');
-});
-
-//Create
-app.post('/contacts', function(req, res){
-    Contact.create(req.body, function(err, contact){
-        if(err) return res.json(err);
-        console.log(req.body);
-        res.redirect('/contacts');
-    });
-});
-
-//show
-app.get('/contacts/:id', function(req, res){
-    Contact.findOne({_id:req.params.id}, function(err, contact){
-        if(err) return res.json(err);
-        console.log(req.params);
-        res.render('contacts/show', {contact:contact});
-        console.log(contact);
-    });
-});
-
-//edit
-app.get('/contacts/:id/edit', function(req, res){
-    Contact.findOne({_id:req.params.id}, function(err, contact){
-        if(err) return res.json(err);
-        console.log(req.params);
-        res.render('contacts/edit', {contact:contact});
-    })
-})
-
-//update
-app.put('/contacts/:id', function(req, res){
-    Contact.findOneAndUpdate({_id:req.params.id}, req.body, function(err, contact){
-        if(err) return res.json(err);
-        console.log(req.body);
-        res.redirect('/contacts/'+req.params.id);
-    });
-});
-
-// destroy
-app.delete('/contacts/:id', function(req, res){
-    Contact.findOneAndDelete({_id:req.params.id}, function(err){
-        if(err) return res.json(err);
-        res.redirect('/contacts');
-    });
-});
+// Routes
+app.use('/',require('./routes/home'));
+app.use('/contacts',require('./routes/contacts'));
 
 // Port setting
 var port = 8000;
