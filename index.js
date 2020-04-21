@@ -33,6 +33,10 @@ app.use(methodOverride('_method'));
 app.use('/',require('./routes/home'));
 app.use('/contacts',require('./routes/contacts'));
 
+// error
+app.use((req, res, next) =>
+    res.status(404).send('Sorry cant find that!'));
+
 // Port setting
 var port = 8000;
 app.listen(port, function(){
